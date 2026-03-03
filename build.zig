@@ -9,12 +9,13 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     }).module("tardy");
 
-    const bearssl = b.dependency("bearssl", .{
-        .target = target,
-        .optimize = optimize,
-        .BR_LE_UNALIGNED = false,
-        .BR_BE_UNALIGNED = false,
-    }).artifact("bearssl");
+    // bearssl only needed for TLS examples
+    // const bearssl = b.dependency("bearssl", .{
+    //     .target = target,
+    //     .optimize = optimize,
+    //     .BR_LE_UNALIGNED = false,
+    //     .BR_BE_UNALIGNED = false,
+    // }).artifact("bearssl");
 
     const lib = b.addModule("secsock", .{
         .root_source_file = b.path("src/lib.zig"),
@@ -22,35 +23,38 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    lib.linkLibrary(bearssl);
+    // lib.linkLibrary(bearssl);
     lib.addImport("tardy", tardy);
 
     // add_example(b, "s2n", target, optimize, tardy, lib);
-    add_example(b, "bearssl", target, optimize, tardy, lib);
+    // add_example(b, "bearssl", target, optimize, tardy, lib);
 }
 
 fn add_example(
     b: *std.Build,
     name: []const u8,
     target: std.Build.ResolvedTarget,
-    optimize: std.builtin.Mode,
+    optimize: std.builtin.OptimizeMode,
     tardy_module: *std.Build.Module,
     secsock_module: *std.Build.Module,
 ) void {
-    const example = b.addExecutable(.{
-        .name = b.fmt("{s}", .{name}),
+    const example_mod = b.createModule(.{
         .root_source_file = b.path(b.fmt("examples/{s}/main.zig", .{name})),
         .target = target,
         .optimize = optimize,
-        .strip = false,
+    });
+    example_mod.addImport("tardy", tardy_module);
+    example_mod.addImport("secsock", secsock_module);
+
+    const example = b.addExecutable(.{
+        .name = b.fmt("{s}", .{name}),
+        .root_module = example_mod,
     });
 
     if (target.result.os.tag == .windows) {
         example.linkLibC();
     }
 
-    example.root_module.addImport("tardy", tardy_module);
-    example.root_module.addImport("secsock", secsock_module);
     const install_artifact = b.addInstallArtifact(example, .{});
     b.getInstallStep().dependOn(&install_artifact.step);
 

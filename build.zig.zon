@@ -1,20 +1,18 @@
 .{
     .name = .secsock,
     .fingerprint = 0x68f68567adae4aa7,
-    .version = "0.0.0",
+    .version = "0.1.1",
 
     .dependencies = .{
         .tardy = .{
-            .url = "git+https://github.com/tardy-org/tardy?ref=v0.3.0#cd454060f3b6006368d53c05ab96cd16c73c34de",
-            .hash = "tardy-0.3.0-69wrgi7PAwDFhO7m0aXae6N15s2b28VIOrnRrSHHake6",
+            .url = "git+https://github.com/Huzaifa-MS/tardy#9b46a64d4982e9a46399cf65d3639d4044beaffb",
+            .hash = "tardy-0.3.0-69wrgn77AwAEcu_ZYNvIy039xkIdDtQQ6zFGi9ZWdTOW",
         },
-        .bearssl = .{ .path = "vendor/bearssl" },
     },
     .paths = .{
         "build.zig",
         "build.zig.zon",
         "src",
-        "vendor",
         "LICENSE",
         "README.md",
     },
