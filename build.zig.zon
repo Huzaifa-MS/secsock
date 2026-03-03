@@ -5,8 +5,8 @@
 
     .dependencies = .{
         .tardy = .{
-            .url = "git+https://github.com/Huzaifa-MS/tardy#9b46a64d4982e9a46399cf65d3639d4044beaffb",
-            .hash = "tardy-0.3.0-69wrgn77AwAEcu_ZYNvIy039xkIdDtQQ6zFGi9ZWdTOW",
+            .url = "git+https://github.com/Huzaifa-MS/tardy#26d7d53d99628018e536844e4549ce08595ed553",
+            .hash = "tardy-0.3.0-69wrgpD7AwBKCjab0L9qiMNFva3gJqZ_35a1e_kXf_jc",
         },
     },
     .paths = .{
